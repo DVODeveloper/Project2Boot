@@ -2,6 +2,11 @@ package com.example.Project2Boot.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -12,9 +17,15 @@ public class User {
     @Column(name = "id")
     private int id;
 
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Name must contain only letters")
     @Column(name = "name")
     private String name;
 
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Surname must contain only letters")
     @Column(name = "surname")
     private String surname;
 
@@ -64,5 +75,18 @@ public class User {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(name, user.name) && Objects.equals(surname, user.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname);
     }
 }
